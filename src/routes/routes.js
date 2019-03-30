@@ -45,7 +45,51 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Login
-
+/**
+ * @swagger
+ *
+ * /api/login:
+ *   post:
+ *     tags:
+ *       - Login
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - nickname
+ *             properties:
+ *               nickname:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
 router.post("/login", UserController.userLogin);
 
 // Routes Must have checked function of JWT exp
