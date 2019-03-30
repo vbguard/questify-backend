@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 const cors = require("cors");
 const notFoundHandler = require("../middleware/not-found");
 const serverErrorHandler = require("../middleware/server-error");
@@ -10,12 +9,6 @@ const UserController = require("../controllers/user");
 // const UserQuestsController = require("../controllers/quests");
 const QuestsDefaultController = require("../controllers/questsDefault");
 const ChallengesDefaultController = require("../controllers/challengesDefault");
-
-const passportCheck = (req, res, next) =>
-  passport.authenticate("jwt", {
-    session: false,
-    failWithError: true
-  })(req, res, next);
 
 const setupCORSForDevelopment = developmentUrl => {
   const corsOptions = {
@@ -91,9 +84,6 @@ if (process.env.NODE_ENV === "production") {
  *                  example: "error message written here"
  */
 router.post("/login", UserController.userLogin);
-
-// Routes Must have checked function of JWT exp
-router.get("/logout", passportCheck, UserController.userLogout);
 
 // User Quests CRUD
 // router.get("/quests/:userId", passportCheck, UserQuestsController.getAllQuests);
@@ -460,8 +450,8 @@ router.post("/default/quests", QuestsDefaultController.new);
  *                  type: string
  *                  example: "error message written here"
  */
-router.put("/default/quests", ChallengesDefaultController.update);
-// router.delete("/default/quests/:questsId", ChallengesDefaultController.delete);
+router.put("/default/quests", QuestsDefaultController.update);
+// router.delete("/default/quests/:questsId", QuestsDefaultController.delete);
 
 router.use(notFoundHandler);
 router.use(serverErrorHandler);
