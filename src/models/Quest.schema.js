@@ -14,7 +14,7 @@ const QuestSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    dueData: {
+    dueDate: {
       type: Number,
       required: true
     },
@@ -25,6 +25,10 @@ const QuestSchema = new mongoose.Schema(
     isQuest: {
       type: Boolean,
       default: true
+    },
+    isPriority: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

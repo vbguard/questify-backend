@@ -1,8 +1,14 @@
 const QuestsDefault = require("../models/QuestsDefault.model.js");
 
+module.exports.getAll = (req, res) => {
+  QuestsDefault.find().then(doc => {
+    res.send(doc);
+  });
+};
+
 module.exports.new = (req, res) => {
   const newQuestsDefault = new QuestsDefault({
-    questss: [{ ...req.body }]
+    quests: [{ ...req.body }]
   });
   newQuestsDefault.save().then(doc => {
     res.send(doc);

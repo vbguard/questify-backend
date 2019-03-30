@@ -149,7 +149,7 @@ module.exports.userLogin = (req, res) => {
                           });
                         }
 
-                        respData.quests = Array.from(doc.quests);
+                        respData.tasks = Array.from(doc.quests);
 
                         UsersChallenges.findOne({
                           userID: newUser._id
@@ -168,11 +168,11 @@ module.exports.userLogin = (req, res) => {
                               Math.random() * (doc.challenges.length - 1)
                             )
                           ];
-                          respData.quests = [...respData.quests, getOneArray];
+                          respData.tasks = [...respData.tasks, getOneArray];
                           res.status(200).json({
                             success: true,
                             message:
-                              "Successfully created new user and his Finance Data. You can Login",
+                              "Successfully created new user and his quests. You can Login",
                             data: respData
                           });
                         });
@@ -189,37 +189,42 @@ module.exports.userLogin = (req, res) => {
 
     if (doc) {
       const respData = {};
-      UsersQuests.findOne({ userID: doc._id }).then(doc => {
-        if (!doc) {
+
+      UsersQuests.findOne({ userID: doc._id }, (err, quest) => {
+        if (!quest) {
           res.status(400).json({
             success: false,
             message: "Not found User Quest for this user ID"
           });
         }
 
-        respData.quests = Array.from(doc.quests);
+        respData.tasks = Array.from(quest.quests);
 
-        UsersChallenges.findOne({
-          userID: doc._id
-        }).then(doc => {
-          if (!doc) {
-            res.status(400).json({
-              success: false,
-              message: "Not found User Quest for this user ID"
+        UsersChallenges.findOne(
+          {
+            userID: doc._id
+          },
+          (err, challenge) => {
+            if (err) {
+              res.status(400).json({
+                success: false,
+                message: "Not found User Quest for this user ID"
+              });
+            }
+
+            const getOneArray = Array.from(challenge.challenges).filter(
+              item => item.challengeSendToUser !== "true"
+            )[Math.round(Math.random() * (challenge.challenges.length - 1))];
+
+            respData.quests = [...respData.quests, getOneArray];
+
+            res.status(200).json({
+              success: true,
+              message: "Successfully user logined and his Quests send",
+              data: respData
             });
           }
-
-          const getOneArray = Array.from(doc.challenges).filter(
-            item => item.challengeSendToUser !== "true"
-          )[Math.round(Math.random() * (doc.challenges.length - 1))];
-          respData.quests = [...respData.quests, getOneArray];
-          res.status(200).json({
-            success: true,
-            message:
-              "Successfully created new user and his Finance Data. You can Login",
-            data: respData
-          });
-        });
+        );
       });
     }
   });

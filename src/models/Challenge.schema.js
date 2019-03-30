@@ -14,7 +14,7 @@ const ChallengeSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    dueData: {
+    dueDate: {
       type: Number,
       required: true
     },
@@ -24,7 +24,7 @@ const ChallengeSchema = new mongoose.Schema(
     },
     isQuest: {
       type: Boolean,
-      default: true
+      default: false
     },
     challengeSendToUser: {
       type: Boolean,
