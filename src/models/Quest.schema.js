@@ -15,8 +15,8 @@ const QuestSchema = new mongoose.Schema(
       required: true
     },
     dueDate: {
-      type: Number,
-      required: true
+      type: Date,
+      default: Date.now()
     },
     done: {
       type: Boolean,
