@@ -109,18 +109,357 @@ router.get("/logout", passportCheck, UserController.userLogout);
 
 // // Challenges Default CRUD
 // router.get("/default/challenges", ChallengesDefaultController.getAll);
+/**
+ * @swagger
+ *
+ * /api/default/challenges:
+ *   post:
+ *     tags:
+ *       - Default
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - nickname
+ *             properties:
+ *              name:
+ *                type: string
+ *                required: true
+ *                example: Basic name for challenge
+ *              group:
+ *                type: string
+ *                required: true
+ *                example: Learning
+ *              difficulty:
+ *                type: string
+ *                required: true
+ *                example: Easy
+ *              dueData:
+ *                type: number
+ *                required: true
+ *                example: 1282172623
+ *              done:
+ *                type: boolean
+ *                example: true
+ *              isQuest:
+ *                type: boolean
+ *                example: true
+ *              challengeSendToUser:
+ *                type: boolean
+ *                exampla: false
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
 router.post("/default/challenges", ChallengesDefaultController.new);
+/**
+ * @swagger
+ *
+ * /api/default/challenges:
+ *   put:
+ *     tags:
+ *       - Default
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - nickname
+ *             properties:
+ *              name:
+ *                type: string
+ *                required: true
+ *                example: Basic name for challenge
+ *              group:
+ *                type: string
+ *                required: true
+ *                example: Learning
+ *              difficulty:
+ *                type: string
+ *                required: true
+ *                example: Easy
+ *              dueData:
+ *                type: number
+ *                required: true
+ *                example: 1282172623
+ *              done:
+ *                type: boolean
+ *                example: true
+ *              isQuest:
+ *                type: boolean
+ *                example: true
+ *              challengeSendToUser:
+ *                type: boolean
+ *                example: false
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
 router.put("/default/challenges", ChallengesDefaultController.update);
 // router.delete(
 //   "/default/challenges/:challengeId",
 //   ChallengesDefaultController.delete
 // );
 
-// // Quests Default CRUD
-// // Challenges Default CRUD
+// Quests Default CRUD
+/**
+ * @swagger
+ *
+ * /api/default/challenges:
+ *   get:
+ *     tags:
+ *       - Default
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - nickname
+ *             properties:
+ *              name:
+ *                type: string
+ *                required: true
+ *                example: Basic name for challenge
+ *              group:
+ *                type: string
+ *                required: true
+ *                example: Learning
+ *              difficulty:
+ *                type: string
+ *                required: true
+ *                example: Easy
+ *              dueData:
+ *                type: number
+ *                required: true
+ *                example: 1282172623
+ *              done:
+ *                type: boolean
+ *                example: true
+ *              isQuest:
+ *                type: boolean
+ *                example: true
+ *              challengeSendToUser:
+ *                type: boolean
+ *                example: false
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
 // router.get("/default/quests", QuestsDefaultController.getAll);
+/**
+ * @swagger
+ *
+ * /api/default/challenges:
+ *   post:
+ *     tags:
+ *       - Default
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - nickname
+ *             properties:
+ *              name:
+ *                type: string
+ *                required: true
+ *                example: Basic name for challenge
+ *              group:
+ *                type: string
+ *                required: true
+ *                example: Learning
+ *              difficulty:
+ *                type: string
+ *                required: true
+ *                example: Easy
+ *              dueData:
+ *                type: number
+ *                required: true
+ *                example: 1282172623
+ *              done:
+ *                type: boolean
+ *                example: true
+ *              isQuest:
+ *                type: boolean
+ *                example: true
+ *              challengeSendToUser:
+ *                type: boolean
+ *                exampla: false
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
 router.post("/default/quests", QuestsDefaultController.new);
-// router.put("/default/quests/:questsId", ChallengesDefaultController.update);
+/**
+ * @swagger
+ *
+ * /api/default/challenges:
+ *   put:
+ *     tags:
+ *       - Default
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - nickname
+ *             properties:
+ *              name:
+ *                type: string
+ *                required: true
+ *                example: Basic name for challenge
+ *              group:
+ *                type: string
+ *                required: true
+ *                example: Learning
+ *              difficulty:
+ *                type: string
+ *                required: true
+ *                example: Easy
+ *              dueData:
+ *                type: number
+ *                required: true
+ *                example: 1282172623
+ *              done:
+ *                type: boolean
+ *                example: true
+ *              isQuest:
+ *                type: boolean
+ *                example: true
+ *              challengeSendToUser:
+ *                type: boolean
+ *                example: false
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
+router.put("/default/quests/:questsId", ChallengesDefaultController.update);
 // router.delete("/default/quests/:questsId", ChallengesDefaultController.delete);
 
 router.use(notFoundHandler);

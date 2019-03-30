@@ -1,7 +1,9 @@
 const ChallengesDefault = require("../models/ChallengesDefault.model.js");
 
 module.exports.new = (req, res) => {
-  const newChallengeDefault = new ChallengesDefault({ ...req.body });
+  const newChallengeDefault = new ChallengesDefault({
+    challenges: [{ ...req.body }]
+  });
   newChallengeDefault.save().then(doc => {
     res.send(doc);
   });

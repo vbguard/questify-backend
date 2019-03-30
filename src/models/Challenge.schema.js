@@ -20,7 +20,7 @@ const ChallengeSchema = new mongoose.Schema(
     },
     done: {
       type: Boolean,
-      required: true
+      default: false
     },
     isQuest: {
       type: Boolean,
