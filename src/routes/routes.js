@@ -256,7 +256,7 @@ router.put("/default/challenges", ChallengesDefaultController.update);
 /**
  * @swagger
  *
- * /api/default/challenges:
+ * /api/default/quests:
  *   get:
  *     tags:
  *       - Default
@@ -325,7 +325,7 @@ router.put("/default/challenges", ChallengesDefaultController.update);
 /**
  * @swagger
  *
- * /api/default/challenges:
+ * /api/default/quests:
  *   post:
  *     tags:
  *       - Default
@@ -394,7 +394,7 @@ router.post("/default/quests", QuestsDefaultController.new);
 /**
  * @swagger
  *
- * /api/default/challenges:
+ * /api/default/quests:
  *   put:
  *     tags:
  *       - Default
@@ -459,7 +459,7 @@ router.post("/default/quests", QuestsDefaultController.new);
  *                  type: string
  *                  example: "error message written here"
  */
-router.put("/default/quests/:questsId", ChallengesDefaultController.update);
+router.put("/default/quests", ChallengesDefaultController.update);
 // router.delete("/default/quests/:questsId", ChallengesDefaultController.delete);
 
 router.use(notFoundHandler);
