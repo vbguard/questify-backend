@@ -2,7 +2,7 @@ const QuestsDefault = require("../models/QuestsDefault.model.js");
 
 module.exports.new = (req, res) => {
   const newQuestsDefault = new QuestsDefault({
-    challenges: [{ ...req.body }]
+    questss: [{ ...req.body }]
   });
   newQuestsDefault.save().then(doc => {
     res.send(doc);
