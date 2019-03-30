@@ -1,4 +1,4 @@
-const QuestsDefault = require("../models/QuestsDefault.model.js");
+const QuestsDefault = require("../models/QuestsDefault.model");
 
 module.exports.getAll = (req, res) => {
   QuestsDefault.find().then(doc => {
