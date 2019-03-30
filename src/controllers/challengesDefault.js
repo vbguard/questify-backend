@@ -1,5 +1,11 @@
 const ChallengesDefault = require("../models/ChallengesDefault.model.js");
 
+module.exports.getAll = (req, res) => {
+  ChallengesDefault.find().then(doc => {
+    res.send(doc);
+  });
+};
+
 module.exports.new = (req, res) => {
   const newChallengeDefault = new ChallengesDefault({
     challenges: [{ ...req.body }]

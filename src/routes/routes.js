@@ -148,7 +148,7 @@ router.get("/logout", passportCheck, UserController.userLogout);
  *                example: true
  *              challengeSendToUser:
  *                type: boolean
- *                exampla: false
+ *                example: false
  *     responses:
  *       200:
  *         description: Return json with User data create
@@ -321,7 +321,8 @@ router.put("/default/challenges", ChallengesDefaultController.update);
  *                  type: string
  *                  example: "error message written here"
  */
-// router.get("/default/quests", QuestsDefaultController.getAll);
+router.get("/default/quests", QuestsDefaultController.getAll);
+
 /**
  * @swagger
  *
@@ -361,7 +362,7 @@ router.put("/default/challenges", ChallengesDefaultController.update);
  *                example: true
  *              challengeSendToUser:
  *                type: boolean
- *                exampla: false
+ *                example: false
  *     responses:
  *       200:
  *         description: Return json with User data create
