@@ -7,7 +7,7 @@ const config = require("../../config/config");
 
 const UserController = require("../controllers/user");
 const UserQuestsController = require("../controllers/quests");
-const UserChallengesController = require("../controllers/challenges.js");
+// const UserChallengesController = require("../controllers/challenges.js");
 const QuestsDefaultController = require("../controllers/questsDefault");
 const ChallengesDefaultController = require("../controllers/challengesDefault");
 
@@ -221,10 +221,10 @@ router.put("/quests/:userId", UserQuestsController.update);
 router.delete("/quests/:userId", UserQuestsController.delete);
 
 // // User Challenges CRUD
-router.get("/challenges/:userId", UserChallengesController.getAll);
-router.post("/challenges/:userId", UserChallengesController.new);
-router.put("/challenges/:userId", UserChallengesController.update);
-router.delete("/challenges/:userId", UserChallengesController.delete);
+// router.get("/challenges/:userId", UserChallengesController.getAll);
+// router.post("/challenges/:userId", UserChallengesController.new);
+// router.put("/challenges/:userId", UserChallengesController.update);
+// router.delete("/challenges/:userId", UserChallengesController.delete);
 
 // // Challenges Default CRUD
 // router.get("/default/challenges", ChallengesDefaultController.getAll);

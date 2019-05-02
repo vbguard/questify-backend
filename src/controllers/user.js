@@ -221,6 +221,7 @@ module.exports.userLogin = (req, res) => {
             res.status(200).json({
               success: true,
               message: "Successfully user logined and his Quests send",
+              user: doc,
               data: respData
             });
           }
