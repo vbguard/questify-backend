@@ -7,11 +7,10 @@ module.exports.getAll = (req, res) => {
 };
 
 module.exports.new = (req, res) => {
-  const newChallengeDefault = new ChallengesDefault({
-    challenges: [{ ...req.body }]
-  });
+  const newChallengeDefault = new ChallengesDefault(req.body);
+
   newChallengeDefault.save().then(doc => {
-    res.send(doc);
+    res.status(201).json(doc);
   });
 };
 
