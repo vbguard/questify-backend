@@ -1,6 +1,6 @@
 module.exports = {
   MondoDB: {
-    url: "mongodb://fusion:fusion34GH@vbguard.dev:50023/questify"
+    url: "mongodb://localhost:27017/questify"
   },
   client: {
     development: {
