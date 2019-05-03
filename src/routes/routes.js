@@ -6,7 +6,8 @@ const serverErrorHandler = require("../middleware/server-error");
 const config = require("../../config/config");
 
 const UserController = require("../controllers/user");
-// const UserQuestsController = require("../controllers/quests");
+const UserQuestsController = require("../controllers/quests");
+// const UserChallengesController = require("../controllers/challenges.js");
 const QuestsDefaultController = require("../controllers/questsDefault");
 const ChallengesDefaultController = require("../controllers/challengesDefault");
 
@@ -86,10 +87,138 @@ if (process.env.NODE_ENV === "production") {
 router.post("/login", UserController.userLogin);
 
 // User Quests CRUD
-// router.get("/quests/:userId", passportCheck, UserQuestsController.getAllQuests);
-// router.post("/quests/:userId", UserQuestsController.saveNewQuest);
-// router.put("/quests/:userId", UserQuestsController.updateQuest);
-// router.delete("/quests/:userId", UserQuestsController.deleteQuest);
+/**
+ * @swagger
+ *
+ * /api/quests:
+ *   get:
+ *     tags:
+ *       - Quests CRUD
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: array
+ *                  example: [{'first doc'}, {'second doc'}, {...}]
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
+router.get("/quests/:userId", UserQuestsController.getAll);
+/**
+ * @swagger
+ *
+ * /api/quests:
+ *   post:
+ *     tags:
+ *       - Quests CRUD
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: array
+ *                  example: [{'first doc'}, {'second doc'}, {...}]
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
+router.post("/quests/:userId", UserQuestsController.new);
+/**
+ * @swagger
+ *
+ * /api/quests:
+ *   get:
+ *     tags:
+ *       - Quests CRUD
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: array
+ *                  example: [{'first doc'}, {'second doc'}, {...}]
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
+router.put("/quests/:userId", UserQuestsController.update);
+/**
+ * @swagger
+ *
+ * /api/quests:
+ *   get:
+ *     tags:
+ *       - Quests CRUD
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: array
+ *                  example: [{'first doc'}, {'second doc'}, {...}]
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                error:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
+router.delete("/quests/:userId", UserQuestsController.delete);
 
 // // User Challenges CRUD
 // router.get("/challenges/:userId", UserChallengesController.getAll);

@@ -217,6 +217,7 @@ module.exports.userLogin = (req, res) => {
             )[Math.round(Math.random() * (challenge.challenges.length - 1))];
 
             respData.tasks = [...respData.tasks, getOneArray];
+            respData.user = doc;
 
             res.status(200).json({
               success: true,

@@ -15,10 +15,13 @@ require("../passport/passport")(passport);
 // Get url to server MongoDB
 const dbUrl = require("../../../config/config").MondoDB.url;
 
-mongoose.set("useCreateIndex", true);
 // Connect to MongoDB
 mongoose
-  .connect(dbUrl, { useNewUrlParser: true })
+  .connect(dbUrl, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
