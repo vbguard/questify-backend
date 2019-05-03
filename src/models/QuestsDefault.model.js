@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
-const QuestSchema = require("./Quest.schema");
-
 const QuestsDefaultSchema = new mongoose.Schema(
   {
-    quests: [QuestSchema]
+    dueDate: Date,
+    isQuest: Boolean,
+    isPriority: Boolean,
+    name: String,
+    group: String,
+    difficulty: String,
+    done: Boolean
   },
   { timestamps: true }
 );
