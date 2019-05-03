@@ -44,7 +44,7 @@ module.exports.userLogin = (req, res) => {
           },
           userQuestsDefault: function(cb) {
             setTimeout(function() {
-              QuestsDefault.find().then(doc => cb(null, doc[0]));
+              QuestsDefault.find().then(doc => cb(null, doc));
             }, 100);
           },
           userQuests: function(cb) {
@@ -62,7 +62,7 @@ module.exports.userLogin = (req, res) => {
           userChallengesDefault: function(cb) {
             setTimeout(function() {
               ChallengesDefault.find().then(doc => {
-                cb(null, doc[0]);
+                cb(null, doc);
               });
             });
           }
@@ -88,7 +88,7 @@ module.exports.userLogin = (req, res) => {
             { _id: userQuests._id },
             {
               $set: {
-                quests: [...userQuestsDefault.quests],
+                quests: [...userQuestsDefault],
                 userID: String(user._id)
               }
             },
@@ -105,7 +105,7 @@ module.exports.userLogin = (req, res) => {
                 { _id: userChallenges._id },
                 {
                   $set: {
-                    challenges: [...userChallengesDefault.challenges],
+                    challenges: [...userChallengesDefault],
                     userID: String(user._id)
                   }
                 },
