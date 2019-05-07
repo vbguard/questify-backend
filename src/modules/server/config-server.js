@@ -69,6 +69,8 @@ app.use(function(req, res, next) {
 
 swaggerDoc(app);
 
+app.use(express.static("questify_frontend"));
+
 // Connecting All API Routes
 app.use("/api", routes);
 
