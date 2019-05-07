@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
-const ChallengeSchema = new mongoose.Schema(
+const ChallengesSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true
@@ -34,4 +38,6 @@ const ChallengeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = ChallengeSchema;
+const Challenges = mongoose.model("Challenges", ChallengesSchema);
+
+module.exports = Challenges;

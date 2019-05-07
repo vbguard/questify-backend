@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const jwt = require("jsonwebtoken");
 const CONFIG = require("../../config/config");
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
   {
     nickname: {
       type: String,
@@ -12,11 +13,9 @@ const UserSchema = new mongoose.Schema(
     shortNickname: {
       type: String
     },
-    questsID: {
-      type: String
-    },
-    challengesID: {
-      type: String
+    dashboard: {
+      type: Schema.Types.ObjectId,
+      ref: "Dashboard"
     }
   },
   {
