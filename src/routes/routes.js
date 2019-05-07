@@ -5,9 +5,10 @@ const notFoundHandler = require("../middleware/not-found");
 const serverErrorHandler = require("../middleware/server-error");
 const config = require("../../config/config");
 
-const UserController = require("../controllers/user");
+// const UserController = require("../controllers/user");
+const UserController = require("../controllers/user.controller");
 const UserQuestsController = require("../controllers/quests");
-// const UserChallengesController = require("../controllers/challenges.js");
+const UserChallengesController = require("../controllers/challenges.js");
 const QuestsDefaultController = require("../controllers/questsDefault");
 const ChallengesDefaultController = require("../controllers/challengesDefault");
 
@@ -119,7 +120,8 @@ router.post("/login", UserController.userLogin);
  *                  type: string
  *                  example: "error message written here"
  */
-router.get("/quests/:userId", UserQuestsController.getAll);
+router.get("/quests", UserQuestsController.getAll);
+
 /**
  * @swagger
  *
@@ -152,7 +154,8 @@ router.get("/quests/:userId", UserQuestsController.getAll);
  *                  type: string
  *                  example: "error message written here"
  */
-router.post("/quests/:userId", UserQuestsController.new);
+router.post("/quests", UserQuestsController.new);
+
 /**
  * @swagger
  *
@@ -186,11 +189,12 @@ router.post("/quests/:userId", UserQuestsController.new);
  *                  example: "error message written here"
  */
 router.put("/quests/:userId", UserQuestsController.update);
+
 /**
  * @swagger
  *
- * /api/quests:
- *   get:
+ * /api/quests/{questId}:
+ *   delete:
  *     tags:
  *       - Quests CRUD
  *     responses:
@@ -201,9 +205,9 @@ router.put("/quests/:userId", UserQuestsController.update);
  *            schema:
  *              type: object
  *              properties:
- *                data:
+ *                quest:
  *                  type: array
- *                  example: [{'first doc'}, {'second doc'}, {...}]
+ *                  example: {delete quest}
  *       400:
  *         description: If not correct data request
  *         content:
@@ -220,13 +224,76 @@ router.put("/quests/:userId", UserQuestsController.update);
  */
 router.delete("/quests/:userId", UserQuestsController.delete);
 
-// // User Challenges CRUD
-// router.get("/challenges/:userId", UserChallengesController.getAll);
-// router.post("/challenges/:userId", UserChallengesController.new);
-// router.put("/challenges/:userId", UserChallengesController.update);
-// router.delete("/challenges/:userId", UserChallengesController.delete);
+// User Challenges CRUD
+/**
+ * @swagger
+ *
+ * /api/challenges/{challengeId}:
+ *   put:
+ *     tags:
+ *       - Challenges
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *              name:
+ *                type: string
+ *                required: true
+ *                example: Basic name for challenge
+ *              group:
+ *                type: string
+ *                required: true
+ *                example: Learning
+ *              difficulty:
+ *                type: string
+ *                required: true
+ *                example: Easy
+ *              dueData:
+ *                type: number
+ *                required: true
+ *                example: 1282172623
+ *              done:
+ *                type: boolean
+ *                example: true
+ *              isQuest:
+ *                type: boolean
+ *                example: true
+ *              challengeSendToUser:
+ *                type: boolean
+ *                example: false
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: string
+ *                  example: "Successfully created new user and his Finance Data. You can Login"
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ *                message:
+ *                  type: string
+ *                  example: "error message written here"
+ */
+router.put("/challenges/:userId", UserChallengesController.update);
 
-// // Challenges Default CRUD
+// Challenges Default CRUD
 // router.get("/default/challenges", ChallengesDefaultController.getAll);
 /**
  * @swagger

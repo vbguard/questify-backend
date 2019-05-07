@@ -1,7 +1,8 @@
-const UsersQuests = require("../models/UsersQuests.model");
+const Quests = require("../models/Quests.model");
+const Dashboard = require("../models/Dashboard.model");
 
 module.exports.getAll = (req, res) => {
-  UsersQuests.find({}, (err, docs) => {
+  Quests.find({}, (err, docs) => {
     if (err) {
       res.status(400).json({
         error: true,
@@ -9,47 +10,69 @@ module.exports.getAll = (req, res) => {
       });
     }
 
-    res.json({ data: docs });
+    res.status(200).json({
+      success: true,
+      message: "Send all quests all users",
+      quests: docs
+    });
   });
 };
 
 module.exports.new = (req, res) => {
-  const newQuestsDefault = new UsersQuests({
-    quests: [{ ...req.body }]
-  });
-  newQuestsDefault.save().then(doc => {
-    res.json({ data: doc });
-  });
+  const newData = req.body;
+  const newQuests = new Quests(newData);
+
+  Dashboard.findOneAndUpdate(
+    { userId: newData.userId },
+    { $push: { quests: newQuests._id } },
+    () => {
+      newQuests.save().then(quest => {
+        res.status(201).json({
+          success: true,
+          message: "New Quest successfully saved and returned this...",
+          quest: quest
+        });
+      });
+    }
+  );
 };
 
 module.exports.update = (req, res) => {
-  const fieldUpdate = req.body.fieldUpdate;
-  const questId = req.body.questId;
+  const fieldUpdate = req.body;
+  const questId = req.params.questId;
 
-  UsersQuests.findOneAndUpdate(
+  Quests.findOneAndUpdate(
     { _id: questId },
     { $set: { fieldUpdate } },
     { new: true, upsert: true },
-    (err, doc) => {
+    (err, quest) => {
       if (err) {
         res.status(400).json({
           error: true,
           message: err.message
         });
       }
-      res.json({ data: doc });
+      res.status(201).json({
+        success: true,
+        message: "New Quest successfully saved and returned this...",
+        quest: quest
+      });
     }
   );
 };
 
 module.exports.delete = (req, res) => {
-  UsersQuests.findOneAndDelete({ _id: req.body.questId }, (err, doc) => {
+  Quests.findOneAndDelete({ _id: req.params.questId }, (err, quest) => {
     if (err) {
       res.status(400).json({
         error: true,
         message: err.message
       });
     }
-    res.json({ data: doc });
+    res.status(201).json({
+      success: true,
+      message: "Quest successfully delete",
+      quest: quest
+    });
   });
 };

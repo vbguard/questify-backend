@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
-const QuestSchema = new mongoose.Schema(
+const QuestsSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true
@@ -20,7 +24,7 @@ const QuestSchema = new mongoose.Schema(
     },
     done: {
       type: Boolean,
-      required: true
+      default: false
     },
     isQuest: {
       type: Boolean,
@@ -34,4 +38,6 @@ const QuestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = QuestSchema;
+const Quests = mongoose.model("Quests", QuestsSchema);
+
+module.exports = Quests;

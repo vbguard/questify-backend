@@ -1,7 +1,7 @@
 const async = require("async");
 const User = require("../models/User.model.js");
-const UsersQuests = require("../models/UsersQuests.model");
-const UsersChallenges = require("../models/UsersChallenges.model");
+const Quests = require("../models/Quests.model");
+const Challenges = require("../models/Challenges.model");
 const QuestsDefault = require("../models/QuestsDefault.model.js");
 const ChallengesDefault = require("../models/ChallengesDefault.model.js");
 
@@ -49,14 +49,14 @@ module.exports.userLogin = (req, res) => {
           },
           userQuests: function(cb) {
             setTimeout(function() {
-              const newUserQuests = new UsersQuests();
-              newUserQuests.save().then(doc => cb(null, doc));
+              const newQuests = new Quests();
+              newQuests.save().then(doc => cb(null, doc));
             }, 100);
           },
           userChallenges: function(cb) {
             setTimeout(function() {
-              const newUserChallenges = new UsersChallenges();
-              newUserChallenges.save().then(doc => cb(null, doc));
+              const newChallenges = new Challenges();
+              newChallenges.save().then(doc => cb(null, doc));
             }, 100);
           },
           userChallengesDefault: function(cb) {
@@ -84,7 +84,7 @@ module.exports.userLogin = (req, res) => {
           } = results;
 
           const respData = {};
-          UsersQuests.findOneAndUpdate(
+          Quests.findOneAndUpdate(
             { _id: userQuests._id },
             {
               $set: {
@@ -101,7 +101,7 @@ module.exports.userLogin = (req, res) => {
                 });
               }
 
-              UsersChallenges.findOneAndUpdate(
+              Challenges.findOneAndUpdate(
                 { _id: userChallenges._id },
                 {
                   $set: {
@@ -141,7 +141,7 @@ module.exports.userLogin = (req, res) => {
                       // Logic to response
                       respData.user = newUser;
 
-                      UsersQuests.findOne({ userID: newUser._id }).then(doc => {
+                      Quests.findOne({ userID: newUser._id }).then(doc => {
                         if (!doc) {
                           res.status(400).json({
                             success: false,
@@ -151,7 +151,7 @@ module.exports.userLogin = (req, res) => {
 
                         respData.tasks = Array.from(doc.quests);
 
-                        UsersChallenges.findOne({
+                        Challenges.findOne({
                           userID: newUser._id
                         }).then(doc => {
                           if (!doc) {
@@ -190,7 +190,7 @@ module.exports.userLogin = (req, res) => {
     if (doc) {
       const respData = {};
 
-      UsersQuests.findOne({ userID: doc._id }, (err, quest) => {
+      Quests.findOne({ userID: doc._id }, (err, quest) => {
         if (!quest) {
           res.status(400).json({
             success: false,
@@ -200,7 +200,7 @@ module.exports.userLogin = (req, res) => {
 
         respData.tasks = Array.from(quest.quests);
 
-        UsersChallenges.findOne(
+        Challenges.findOne(
           {
             userID: doc._id
           },
