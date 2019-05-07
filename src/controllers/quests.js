@@ -40,11 +40,13 @@ module.exports.new = (req, res) => {
 module.exports.update = (req, res) => {
   const fieldUpdate = req.body;
   const questId = req.params.questId;
+  console.log(questId);
+  console.log(fieldUpdate);
 
-  Quests.findOneAndUpdate(
-    { _id: questId },
-    { $set: { fieldUpdate } },
-    { new: true, upsert: true },
+  Quests.findByIdAndUpdate(
+    questId,
+    { $set: { ...fieldUpdate } },
+    { new: true },
     (err, quest) => {
       if (err) {
         res.status(400).json({
@@ -52,6 +54,7 @@ module.exports.update = (req, res) => {
           message: err.message
         });
       }
+      console.log(quest);
       res.status(201).json({
         success: true,
         message: "New Quest successfully saved and returned this...",
