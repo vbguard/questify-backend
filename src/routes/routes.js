@@ -188,7 +188,7 @@ router.post("/quests", UserQuestsController.new);
  *                  type: string
  *                  example: "error message written here"
  */
-router.put("/quests/:userId", UserQuestsController.update);
+router.put("/quests/:questId", UserQuestsController.update);
 
 /**
  * @swagger
@@ -222,7 +222,7 @@ router.put("/quests/:userId", UserQuestsController.update);
  *                  type: string
  *                  example: "error message written here"
  */
-router.delete("/quests/:userId", UserQuestsController.delete);
+router.delete("/quests/:questId", UserQuestsController.delete);
 
 // User Challenges CRUD
 /**
@@ -291,7 +291,7 @@ router.delete("/quests/:userId", UserQuestsController.delete);
  *                  type: string
  *                  example: "error message written here"
  */
-router.put("/challenges/:userId", UserChallengesController.update);
+router.put("/challenges/:challengeId", UserChallengesController.update);
 
 // Challenges Default CRUD
 // router.get("/default/challenges", ChallengesDefaultController.getAll);

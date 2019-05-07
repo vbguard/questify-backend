@@ -9,17 +9,17 @@ const DashboardSchema = new Schema({
   quests: [
     {
       type: Schema.Types.ObjectId,
-      ref: "UsersQuests"
+      ref: "Quests"
     }
   ],
   challengeSend: {
     type: Schema.Types.ObjectId,
-    ref: "UserChallenges"
+    ref: "Challenges"
   },
   allChallenges: [
     {
       type: Schema.Types.ObjectId,
-      ref: "UserChallenges"
+      ref: "Challenges"
     }
   ]
 });

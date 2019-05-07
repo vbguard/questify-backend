@@ -12,49 +12,140 @@ module.exports.userLogin = (req, res) => {
     // ? Check have USER in DB => query search by field 'nickname'
 
     User.findOne({ nickname: nickname }, async (err, user) => {
-      if (err) {
-        res.status(404).json({
-          success: false,
-          message: err.message
-        });
-      }
-
       //! if have USER in DB. Return in response his Quests and One Challenge this USER
       if (user) {
-        const getUser = await User.findOne({ _id: user._id });
+        User.findOne({ _id: user._id }, (err, getUser) => {
+          Dashboard.findOne({ userId: getUser._id }, (err, getDashboard) => {
+            console.log("❤️:  ", getDashboard.challengeSend, " 🛠🛠🛠🛠🛠🛠🛠🛠 🛠");
 
-        const getDashboard = await Dashboard.findOne({ userId: getUser._id });
+            if (!getDashboard.challengeSend) {
+              console.log("🔥🔥🔥🔥🔥🔥  get challenge for user 🔥🔥🔥🔥🔥");
 
-        if (!getDashboard.challengeSend) {
-          const getUserChallenges = await Challenges.find({ userId: user._id });
+              Challenges.find(
+                { userId: user._id },
+                (err, getUserChallenges) => {
+                  const getChallengesNotSendUser = getUserChallenges.filter(
+                    challenge => !challenge.challengeSendToUser
+                  );
 
-          const getChallengesNotSendUser = getUserChallenges.filter(
-            challenge => !challenge.challengeSendToUser
-          );
+                  if (getChallengesNotSendUser.length === 0) {
+                    Quests.populate(
+                      getDashboard,
+                      { path: "quests", model: "Quests" },
+                      (err, getQuests) => {
+                        Challenges.populate(
+                          getQuests,
+                          { path: "allChallenges", model: "Challenges" },
+                          (err, allQuestsWithChallenge) => {
+                            const getAllDoneChallenges = allQuestsWithChallenge.allChallenges.filter(
+                              challenge => challenge.done
+                            );
 
-          getDashboard.challengeSend =
-            getChallengesNotSendUser[
-              Math.floor(Math.random() * getChallengesNotSendUser.length)
-            ];
-          getDashboard.save((err, newDashboard) => {
-            if (err) throw err;
+                            res.status(200).json({
+                              success: true,
+                              message:
+                                "User successfully created and his quests and challenges. One challenges send by get randomly",
+                              data: {
+                                tasks: [
+                                  ...allQuestsWithChallenge.quests,
+                                  ...getAllDoneChallenges
+                                ],
+                                user: getUser
+                              }
+                            });
+                          }
+                        );
+                      }
+                    );
+                  }
 
-            if (newDashboard) {
+                  if (getChallengesNotSendUser.length > 0) {
+                    console.log("netxt down");
+                    getDashboard.challengeSend =
+                      getChallengesNotSendUser[
+                        Math.floor(
+                          Math.random() * getChallengesNotSendUser.length
+                        )
+                      ];
+
+                    const getToday = new Date();
+
+                    Challenges.findByIdAndUpdate(
+                      getDashboard.challengeSend,
+                      {
+                        $set: {
+                          dueDate: getToday.setDate(getToday.getDate() + 7)
+                        }
+                      },
+                      { new: true },
+                      // eslint-disable-next-line no-unused-vars
+                      error => {
+                        getDashboard.save((err, updatedDashboard) => {
+                          if (updatedDashboard) {
+                            Quests.populate(
+                              updatedDashboard,
+                              { path: "quests", model: "Quests" },
+                              (err, getQuests) => {
+                                Challenges.populate(
+                                  getQuests,
+                                  [
+                                    {
+                                      path: "challengeSend",
+                                      model: "Challenges"
+                                    },
+                                    {
+                                      path: "allChallenges",
+                                      model: "Challenges"
+                                    }
+                                  ],
+                                  (err, allQuestsWithChallenge) => {
+                                    console.log(allQuestsWithChallenge);
+                                    const getAllDoneChallenges = allQuestsWithChallenge.allChallenges.filter(
+                                      challenge => challenge.done
+                                    );
+
+                                    res.status(200).json({
+                                      success: true,
+                                      message:
+                                        "User successfully created and his quests and challenges. One challenges send by get randomly",
+                                      data: {
+                                        tasks: [
+                                          ...allQuestsWithChallenge.quests,
+                                          ...getAllDoneChallenges,
+                                          allQuestsWithChallenge.challengeSend
+                                        ],
+                                        user: getUser
+                                      }
+                                    });
+                                  }
+                                );
+                              }
+                            );
+                          }
+                        });
+                      }
+                    );
+                  }
+                }
+              );
+            }
+
+            if (getDashboard.challengeSend) {
+              console.log("🔥🔥🔥🔥🔥🔥 USER HAVE CHALLENGE!!! 🔥🔥🔥🔥🔥");
               Quests.populate(
                 getDashboard,
                 { path: "quests", model: "Quests" },
                 (err, getQuests) => {
-                  if (err) {
-                    throw err;
-                  }
-
                   Challenges.populate(
                     getQuests,
-                    { path: "challengeSend", model: "Challenges" },
+                    [
+                      { path: "challengeSend", model: "Challenges" },
+                      { path: "allChallenges", model: "Challenges" }
+                    ],
                     (err, allQuestsWithChallenge) => {
-                      if (err) {
-                        throw err;
-                      }
+                      const getAllChallenges = allQuestsWithChallenge.allChallenges.filter(
+                        challenge => challenge.done
+                      );
 
                       res.status(200).json({
                         success: true,
@@ -64,9 +155,13 @@ module.exports.userLogin = (req, res) => {
                           tasks: allQuestsWithChallenge.challengeSend
                             ? [
                                 ...allQuestsWithChallenge.quests,
-                                allQuestsWithChallenge.challengeSend
+                                allQuestsWithChallenge.challengeSend,
+                                ...getAllChallenges
                               ]
-                            : [...allQuestsWithChallenge.quests],
+                            : [
+                                ...allQuestsWithChallenge.quests,
+                                ...getAllChallenges
+                              ],
                           user: getUser
                         }
                       });
@@ -76,42 +171,7 @@ module.exports.userLogin = (req, res) => {
               );
             }
           });
-        }
-
-        await Quests.populate(
-          getDashboard,
-          { path: "quests", model: "Quests" },
-          (err, getQuests) => {
-            if (err) {
-              throw err;
-            }
-
-            Challenges.populate(
-              getQuests,
-              { path: "challengeSend", model: "Challenges" },
-              (err, allQuestsWithChallenge) => {
-                if (err) {
-                  throw err;
-                }
-
-                res.status(200).json({
-                  success: true,
-                  message:
-                    "User successfully created and his quests and challenges. One challenges send by get randomly",
-                  data: {
-                    tasks: allQuestsWithChallenge.challengeSend
-                      ? [
-                          ...allQuestsWithChallenge.quests,
-                          allQuestsWithChallenge.challengeSend
-                        ]
-                      : [...allQuestsWithChallenge.quests],
-                    user: getUser
-                  }
-                });
-              }
-            );
-          }
-        );
+        });
       }
 
       //! if not Have USER in DB create him and defaults quests and challenges, after response created documents
@@ -123,7 +183,7 @@ module.exports.userLogin = (req, res) => {
         };
 
         //* Create new user in DB
-        const newUser = new User({ nickname: nickname });
+        const newUser = await new User({ nickname: nickname });
 
         //* get his _id for create new Dashboard doc in DB
         const userId = newUser._id;
@@ -136,14 +196,10 @@ module.exports.userLogin = (req, res) => {
          **  allChallenges - [] -> array from {challenges}
          */
 
-        const newDashboard = new Dashboard({ userId: userId });
+        const newDashboard = await new Dashboard({ userId: userId });
         //? Save Dashboard id to new USER
         newUser.dashboard = newDashboard._id;
         newUser.save((err, user) => {
-          if (err) {
-            log.user.error = err.message;
-          }
-
           if (user) {
             log.user.success = true;
           }
@@ -223,22 +279,14 @@ module.exports.userLogin = (req, res) => {
 
         const getDashboard = await Dashboard.findOne({ userId: getUser._id });
 
-        Quests.populate(
+        await Quests.populate(
           getDashboard,
           { path: "quests", model: "Quests" },
           (err, getQuests) => {
-            if (err) {
-              throw err;
-            }
-
             Challenges.populate(
               getQuests,
               { path: "challengeSend", model: "Challenges" },
               (err, allQuestsWithChallenge) => {
-                if (err) {
-                  throw err;
-                }
-
                 res.status(200).json({
                   success: true,
                   message:
@@ -257,10 +305,12 @@ module.exports.userLogin = (req, res) => {
         );
       }
     });
-  } catch (error) {
+  } catch (event) {
+    console.log(event.name, ": ", event.message);
+
     res.status(404).json({
       success: false,
-      message: error.message
+      message: event.message
     });
   }
 };
