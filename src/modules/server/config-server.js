@@ -26,7 +26,7 @@ mongoose
   .catch(err => console.log(err));
 
 // Logger - see connection in/out
-app.use(morgan("dev"));
+app.use(morgan("common"));
 
 // Express json parse
 app.use(express.json());
@@ -69,7 +69,8 @@ app.use(function(req, res, next) {
 
 swaggerDoc(app);
 
-app.use(express.static("questify_frontend"));
+app.use("/", express.static("questify_frontend"));
+app.use("/dashboard", express.static("questify_frontend"));
 
 // Connecting All API Routes
 app.use("/api", routes);
