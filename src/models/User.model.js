@@ -8,7 +8,8 @@ const UserSchema = new Schema(
     nickname: {
       type: String,
       required: [true, "Nickname is required."],
-      unique: true
+      unique: true,
+      lowercase: true
     },
     shortNickname: {
       type: String

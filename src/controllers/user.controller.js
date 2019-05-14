@@ -214,6 +214,10 @@ module.exports.userLogin = (req, res) => {
         const defaultQuestsWithUserId = defaultQuests.map(quest => {
           quest.dueDate = today;
 
+          if (quest.name === "Create an account") {
+            quest.done = true;
+          }
+
           return {
             dueDate: quest.dueDate,
             name: quest.name,
