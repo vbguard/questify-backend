@@ -16,11 +16,7 @@ module.exports.userLogin = (req, res) => {
       if (user) {
         User.findOne({ _id: user._id }, (err, getUser) => {
           Dashboard.findOne({ userId: getUser._id }, (err, getDashboard) => {
-            console.log("❤️:  ", getDashboard.challengeSend, " 🛠🛠🛠🛠🛠🛠🛠🛠 🛠");
-
             if (!getDashboard.challengeSend) {
-              console.log("🔥🔥🔥🔥🔥🔥  get challenge for user 🔥🔥🔥🔥🔥");
-
               Challenges.find(
                 { userId: user._id },
                 (err, getUserChallenges) => {
@@ -41,6 +37,68 @@ module.exports.userLogin = (req, res) => {
                               challenge => challenge.done
                             );
 
+                            //! IF CHALLENGE ALL USED GET NEW CHALLENGE FROM DEFAULT COLLECTION
+                            if (
+                              getAllDoneChallenges.filter(
+                                challengeDone => !challengeDone.done
+                              ).length === 0
+                            ) {
+                              (async () => {
+                                //! Get today Date for update documents
+                                const today = new Date();
+
+                                const defaultChallenges = await ChallengesDefault.find().lean();
+
+                                const defaultChallengesWithUserId = defaultChallenges.map(
+                                  challenge => {
+                                    challenge.dueDate = new Date(
+                                      today.setDate(today.getDate() + 7)
+                                    );
+
+                                    return {
+                                      dueDate: challenge.dueDate,
+                                      name: challenge.name,
+                                      group: challenge.group,
+                                      difficulty: challenge.difficulty,
+                                      userId: getUser._id
+                                    };
+                                  }
+                                );
+
+                                //* insert this document to quests collections
+                                const addedChallenges = await Challenges.insertMany(
+                                  defaultChallengesWithUserId
+                                );
+
+                                // //* get id from new challenges created and updated. After Save this id in Dashboard this new User
+                                await Dashboard.update(
+                                  { userId: getUser._id },
+                                  {
+                                    $push: {
+                                      allChallenges: [
+                                        ...addedChallenges.map(
+                                          challenge => challenge._id
+                                        )
+                                      ]
+                                    }
+                                  }
+                                );
+
+                                res.status(200).json({
+                                  success: true,
+                                  message:
+                                    "User successfully created new challenges. Secondary login user get him.",
+                                  data: {
+                                    tasks: [
+                                      ...allQuestsWithChallenge.quests,
+                                      ...getAllDoneChallenges
+                                    ],
+                                    user: getUser
+                                  }
+                                });
+                              })();
+                            }
+
                             res.status(200).json({
                               success: true,
                               message:
@@ -60,7 +118,6 @@ module.exports.userLogin = (req, res) => {
                   }
 
                   if (getChallengesNotSendUser.length > 0) {
-                    console.log("netxt down");
                     getDashboard.challengeSend =
                       getChallengesNotSendUser[
                         Math.floor(
@@ -99,7 +156,6 @@ module.exports.userLogin = (req, res) => {
                                     }
                                   ],
                                   (err, allQuestsWithChallenge) => {
-                                    console.log(allQuestsWithChallenge);
                                     const getAllDoneChallenges = allQuestsWithChallenge.allChallenges.filter(
                                       challenge => challenge.done
                                     );
@@ -131,7 +187,6 @@ module.exports.userLogin = (req, res) => {
             }
 
             if (getDashboard.challengeSend) {
-              console.log("🔥🔥🔥🔥🔥🔥 USER HAVE CHALLENGE!!! 🔥🔥🔥🔥🔥");
               Quests.populate(
                 getDashboard,
                 { path: "quests", model: "Quests" },
@@ -310,8 +365,6 @@ module.exports.userLogin = (req, res) => {
       }
     });
   } catch (event) {
-    console.log(event.name, ": ", event.message);
-
     res.status(404).json({
       success: false,
       message: event.message

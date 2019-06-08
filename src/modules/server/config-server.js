@@ -4,6 +4,7 @@ const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const swaggerDoc = require("../swagger/swaggerDoc");
 const routes = require("../../routes/routes");
@@ -26,7 +27,7 @@ mongoose
   .catch(err => console.log(err));
 
 // Logger - see connection in/out
-app.use(morgan("common"));
+app.use(morgan("dev"));
 
 // Express json parse
 app.use(express.json());
@@ -50,6 +51,7 @@ app.use(passport.session());
 // Connect flash
 app.use(flash());
 
+app.use("*", cors("*"));
 // Global variables
 app.use(function(req, res, next) {
   res.locals.success_msg = req.flash("success_msg");
@@ -58,14 +60,14 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 swaggerDoc(app);
 
